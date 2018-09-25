@@ -10,7 +10,7 @@
  * fashion: the hour increments when the minutes roll over to zero.
  * 
  * @author Michael Kölling and David J. Barnes
- * @version 2011.07.31
+ * @version 2016.02.29
  */
 public class ClockDisplay
 {
@@ -20,12 +20,13 @@ public class ClockDisplay
     
     /**
      * Constructor for ClockDisplay objects. This constructor 
-     * creates a new clock set at 00:00.
+     * creates a new clock set at 0:00 AM.
      */
     public ClockDisplay()
     {
         hours = new NumberDisplay(24);
         minutes = new NumberDisplay(60);
+        setTime(0,0);
         updateDisplay();
     }
 
@@ -39,6 +40,7 @@ public class ClockDisplay
         hours = new NumberDisplay(24);
         minutes = new NumberDisplay(60);
         setTime(hour, minute);
+        updateDisplay();
     }
 
     /**
@@ -50,6 +52,7 @@ public class ClockDisplay
         minutes.increment();
         if(minutes.getValue() == 0) {  // it just rolled over!
             hours.increment();
+            
         }
         updateDisplay();
     }
@@ -70,6 +73,7 @@ public class ClockDisplay
      */
     public String getTime()
     {
+        updateDisplay();
         return displayString;
     }
     
@@ -78,7 +82,35 @@ public class ClockDisplay
      */
     private void updateDisplay()
     {
-        displayString = hours.getDisplayValue() + ":" + 
-                        minutes.getDisplayValue();
+        if(hours.getValue()>=12)
+        {
+            
+            if(hours.getValue()== 12)
+            {
+                displayString = "12:" + 
+                        minutes.getDisplayValue()+"PM";
+            
+            }
+            else
+            {
+                displayString = (hours.getValue()-12) + ":" + 
+                        minutes.getDisplayValue()+"PM";
+        
+            }
+            
+        }
+        else
+        {   if(hours.getValue()== 0)
+            {
+                displayString = "12:" + 
+                        minutes.getDisplayValue()+"AM";
+            
+            }
+            else
+            {
+                displayString = hours.getDisplayValue() + ":" + 
+                        minutes.getDisplayValue()+"AM";
+            }
+         }
     }
 }
